@@ -1,0 +1,34 @@
+class Customer:
+    def __init__(self, customer_id):
+        self.id = customer_id
+
+class Agent:
+    def __init__(self, name):
+        self.name = name
+        self.is_available = True
+
+    def serve_customer(self, customer):
+        # Assume that the agent takes some time to serve the customer
+        self.is_available = False
+        print(f"Customer {customer.id} is assigned to Agent {self.name}")
+
+    def finish_serving(self):
+        # After serving the customer, the agent becomes available again
+        self.is_available = True
+        print(f"Agent {self.name} is now available.")
+def assign_customer(queue, agents):
+    if queue and any(agent.is_available for agent in agents):
+        customer = queue.pop(0)
+        for agent in agents:
+            if agent.is_available:
+                agent.serve_customer(customer)
+                # Simulate the agent finishing their work
+                agent.finish_serving()
+                break
+
+# Example usage:
+queue = [Customer(1), Customer(2), Customer(3)]
+agents = [Agent("Adam"), Agent("Eve")]
+
+while queue:
+    assign_customer(queue, agents)
